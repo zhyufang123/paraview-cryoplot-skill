@@ -1,0 +1,7 @@
+data_path: "./data.nc"
+var_name: "frost_number"
+bounds: [73,105,26,40,0,0]
+colormap: "Cividis"
+dims: [720,360,1]
+resolution: [3000,3000]
+out_file: "output_figure.pdf"
