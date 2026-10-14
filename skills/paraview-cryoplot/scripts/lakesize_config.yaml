@@ -1,0 +1,43 @@
+# ============================================================
+# lakesize_config.yaml - batch_lakesize.py 的配置（改这里即可，不用改代码）
+# 运行：pvpython batch_lakesize.py
+# ============================================================
+
+# 根目录：所有实验文件夹放在这里，脚本会逐个子目录处理
+root_dir: "G:/subdrainage project/cases"
+
+# 用来识别湖泊的变量名（务必与你 vtu/pvtu 里的变量名一致）
+field_name: "water_mask"            # 例如 water_mask / ice_thickness / phase
+
+# 变量关联类型：CELLS（单元数据）或 POINTS（点数据）
+# 注意：选错关联类型会直接导致面积算错
+association: "CELLS"
+
+# 湖泊判据阈值（变量取值在该区间内视为湖泊单元）
+lower_threshold: 0.5
+upper_threshold: null               # null 表示只做下限（>= lower_threshold）
+
+# 统计模式
+#   total      : 每组实验只统计湖泊总表面积
+#   per_region : 用 Connectivity 划分独立湖泊，逐个湖单独统计面积（面积随时间变化时建议用）
+mode: "total"
+
+# 是否先提取表面再算面积：
+#   3D 体网格数据强烈建议 True（体单元没有"面积"，需提表面才有 area）
+#   纯 2D 面网格可以设 False 少一步
+use_extract_surface: true
+
+# 文件匹配：优先找 *.pvtu（会自动加载配套 vtu 分片），找不到再退 *.vtu
+file_pattern: "*.pvtu"
+
+# ---- 输出 ----
+out_image_dir: "G:/subdrainage project/cases/figs"
+summary_csv:   "G:/subdrainage project/cases/lake_summary.csv"   # 总湖面积汇总
+region_csv:    "G:/subdrainage project/cases/lake_regions.csv"   # mode=per_region 时逐湖面积
+
+# ---- 出图样式（AGU 期刊规范）----
+resolution: [1600, 1200]            # 出图分辨率 [宽, 高]
+colormap: "Cool to Warm"            # ParaView 色带名，如 Cividis / Cool to Warm
+# 固定相机，保证所有子图构图一致（可选，三个数字 x,y,z）
+camera_position: null               # 例如 [0, 0, 1000]
+camera_focal_point: null            # 例如 [0, 0, 0]
